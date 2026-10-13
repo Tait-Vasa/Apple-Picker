@@ -19,21 +19,42 @@ public class AppleTree : MonoBehaviour {
      public float        appleDropDelay = 1f;
 
      void Start () {
-         // Start dropping apples                                           // b
+        // Start dropping apples
+        Invoke("DropApple", 2f);
      }
 
-     void Update () {
-         // Basic Movement
-         Vector3 pos = transform.position;                        
-         pos.x += speed * Time.deltaTime;                         
-         transform.position = pos;                             
+    void DropApple()
+    {
+        GameObject apple = Instantiate<GameObject>(applePrefab);
+        apple.transform.position = transform.position;
+        Invoke("DropApple", appleDropDelay);
+    }
 
-         // Changing Direction 
-         if ( pos.x < -leftAndRightEdge ) {                                        
-             speed = Mathf.Abs( speed );   // Move right                           
-         } else if ( pos.x > leftAndRightEdge ) {                                  
-             speed = -Mathf.Abs( speed );  // Move left                            
-         } 
-                                                    
-     }
+    void Update()
+    {
+        // Basic Movement
+        Vector3 pos = transform.position;
+        pos.x += speed * Time.deltaTime;
+        transform.position = pos;
+
+        // Changing Direction 
+        if (pos.x < -leftAndRightEdge)
+        {
+            speed = Mathf.Abs(speed);   // Move right                           
+        }
+        else if (pos.x > leftAndRightEdge)
+        {
+            speed = -Mathf.Abs(speed);  // Move left                            
+                                        //} else if (Random.value < changeDirChance){
+                                        //speed *= -1;
+        }
+
+    }
+         
+     void FixedUpdate(){
+            //Time the changes of random direction switch
+            if (Random.value < changeDirChance){
+                speed *= -1;
+            }
+      }  
  }
